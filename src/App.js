@@ -1,7 +1,3 @@
-import React, {Component} from 'react'
-import logo from './logo.svg'
-import './App.css'
-
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
@@ -38,7 +34,6 @@ class BooksApp extends React.Component {
   }
 
   render() {
-    const test = this.state.books.filter(book => book.shelf === "wantToRead")
     return (
       <div className="app">
         {this.state.showSearchPage ? (
