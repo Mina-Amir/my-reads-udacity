@@ -17,15 +17,10 @@ class Search extends Component {
         BooksAPI.search(e.target.value)
         .then(response => {
             let data = response
-            console.log(data)
             this.setState({books: data})
         })
     }
     updateBook = (e, book) =>{
-        // let books = [...this.state.books]
-        // let bookIndex = books.findIndex(book => book.id === bookID)
-        // books[bookIndex].shelf = e.target.value
-        // this.setState({books: books})
         BooksAPI.update(book, e.target.value)
       }
     render() {

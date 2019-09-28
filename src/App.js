@@ -1,7 +1,7 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import Book from './Book/Book'
+import Shelf from './shelf/shelf'
 import {Link} from 'react-router-dom'
 
 
@@ -64,42 +64,9 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {this.state.books.filter(book => book.shelf === "currentlyReading")
-                        .map(book => (
-                          <Book updateBook={this.updateBook} key={book.id} book={book}/>
-                        ))
-                      }
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {this.state.books.filter(book => book.shelf === "wantToRead")
-                        .map(book => (
-                          <Book updateBook={this.updateBook} key={book.id} book={book}/>
-                        ))
-                      }
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {this.state.books.filter(book => book.shelf === "read")
-                        .map(book => (
-                          <Book updateBook={this.updateBook} key={book.id} book={book}/>
-                        ))
-                      }
-                    </ol>
-                  </div>
-                </div>
+                <Shelf title="Currently Reading" books={this.state.books} updateBook={this.updateBook} shelf="currentlyReading"  />
+                <Shelf title="Want to Read" books={this.state.books} updateBook={this.updateBook} shelf="wantToRead"  />
+                <Shelf title="Read" books={this.state.books} updateBook={this.updateBook} shelf="read"  />
               </div>
             </div>
             <div className="open-search">
