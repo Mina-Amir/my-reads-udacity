@@ -17,7 +17,7 @@ class Search extends Component {
         BooksAPI.search(e.target.value)
         .then(response => {
             let data = response
-            // console.log(data)
+            console.log(data)
             this.setState({books: data})
         })
     }
