@@ -10,7 +10,7 @@ const Shelf = (props) => {
             <ol className="books-grid">
                 {props.books.filter(book => book.shelf === props.shelf)
                 .map(book => (
-                    <Book updateBook={props.updateBook} key={book.id} book={book}/>
+                    <Book updateBook={props.updateBook} key={book.id} book={book} bookShelf={book.shelf}/>
                 ))
                 }
             </ol>

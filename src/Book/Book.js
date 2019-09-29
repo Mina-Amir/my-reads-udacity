@@ -9,7 +9,7 @@ const Book = (props) => {
                 <div className="book-top">
                     {thumbnail}
                     <div className="book-shelf-changer">
-                        <select value={props.book.shelf || 'none'} onChange={(e) => props.updateBook(e, props.book)}>
+                        <select value={props.bookShelf || 'none'} onChange={(e) => props.updateBook(e, props.book)}>
                         <option value="move" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>

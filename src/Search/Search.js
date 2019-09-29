@@ -7,7 +7,15 @@ import * as BooksAPI from '../BooksAPI'
 
 class Search extends Component {
     state={
-        books:[]
+        books:[],
+        reservedBooks: []
+    }
+    componentDidMount(){
+        BooksAPI.getAll()
+    .then(response => {
+      let data = response
+      this.setState({reservedBooks:data})
+    })
     }
     search = (e) => {
         if(e.target.value === ""){
@@ -25,7 +33,17 @@ class Search extends Component {
       }
     render() {
         const books = this.state.books.length ? (
-            this.state.books.map(book => <Book key={book.id} updateBook={this.updateBook} book={book} />)
+            this.state.books.map(book => {
+                const bookShelf = this.state.reservedBooks.find(el => {
+                    return el.id === book.id
+                })
+                if(bookShelf === undefined){
+                    return <Book key={book.id} updateBook={this.updateBook} book={book} bookShelf="none" />
+                }
+                else{
+                    return <Book key={book.id} updateBook={this.updateBook} book={book} bookShelf={bookShelf.shelf} />
+                }
+            })
         ) : null
         return (
             <div className="search-books">
