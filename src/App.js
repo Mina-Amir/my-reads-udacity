@@ -16,12 +16,9 @@ class BooksApp extends React.Component {
      */
     showSearchPage: false
   }
-  componentDidMount(){
-    BooksAPI.getAll()
-    .then(response => {
-      let data = response
-      this.setState({books:data})
-    })
+  async componentDidMount(){
+    const books = await BooksAPI.getAll()
+    this.setState({ books })
   }
 
   updateBook = (e, book) =>{

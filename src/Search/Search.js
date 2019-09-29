@@ -3,48 +3,49 @@ import '../App.css'
 import {Link} from 'react-router-dom'
 import Book from '../Book/Book'
 import * as BooksAPI from '../BooksAPI'
-
+import {Debounce} from 'react-throttle'
 
 class Search extends Component {
-    state={
-        books:[],
+    state = {
+        books: [],
         reservedBooks: []
     }
-    componentDidMount(){
-        BooksAPI.getAll()
-    .then(response => {
-      let data = response
-      this.setState({reservedBooks:data})
-    })
+    componentDidMount() {
+        BooksAPI
+            .getAll()
+            .then(response => {
+                let data = response
+                this.setState({reservedBooks: data})
+            })
     }
     search = (e) => {
-        if(e.target.value === ""){
+        if (e.target.value === "") {
             this.setState({books: []})
             return
         }
         BooksAPI.search(e.target.value)
-        .then(response => {
-            let data = response
-            this.setState({books: data})
+            .then(response => {
+                let data = response
+                this.setState({books: data})
+            })
+    }
+    updateBook = (e, book) => {
+        BooksAPI.update(book, e.target.value)
+    }
+    bookComponent = () => {
+        const {books, reservedBooks} = this.state
+        return books.map(book => {
+            const bookShelf = reservedBooks.find(el => {
+                return el.id === book.id
+            })
+            if (bookShelf === undefined) {
+                return <Book key={book.id} updateBook={this.updateBook} book={book} bookShelf="none"/>
+            } else {
+                return <Book key={book.id} updateBook={this.updateBook} book={book} bookShelf={bookShelf.shelf}/>
+            }
         })
     }
-    updateBook = (e, book) =>{
-        BooksAPI.update(book, e.target.value)
-      }
     render() {
-        const books = this.state.books.length ? (
-            this.state.books.map(book => {
-                const bookShelf = this.state.reservedBooks.find(el => {
-                    return el.id === book.id
-                })
-                if(bookShelf === undefined){
-                    return <Book key={book.id} updateBook={this.updateBook} book={book} bookShelf="none" />
-                }
-                else{
-                    return <Book key={book.id} updateBook={this.updateBook} book={book} bookShelf={bookShelf.shelf} />
-                }
-            })
-        ) : null
         return (
             <div className="search-books">
                 <div className="search-books-bar">
@@ -60,13 +61,14 @@ class Search extends Component {
                       However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                       you don't find a specific author or title. Every search is limited by search terms.
                     */}
-                        <input type="text" onChange={this.search.bind(this)} placeholder="Search by title or author"/>
-
+                        <Debounce time="1500" handler="onChange">
+                            <input type="text" onChange={this.search.bind(this)} placeholder="Search by title or author"/>
+                        </Debounce>
                     </div>
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {books}
+                        {this.bookComponent().map(el => el)}
                     </ol>
                 </div>
             </div>
