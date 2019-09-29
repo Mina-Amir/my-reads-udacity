@@ -34,16 +34,22 @@ class Search extends Component {
     }
     bookComponent = () => {
         const {books, reservedBooks} = this.state
-        return books.map(book => {
-            const bookShelf = reservedBooks.find(el => {
-                return el.id === book.id
+        console.log(books)
+        if(!books.hasOwnProperty('error')){
+            return books.map(book => {
+                const bookShelf = reservedBooks.find(el => {
+                    return el.id === book.id
+                })
+                if (bookShelf === undefined) {
+                    return <Book key={book.id} updateBook={this.updateBook} book={book} bookShelf="none"/>
+                } else {
+                    return <Book key={book.id} updateBook={this.updateBook} book={book} bookShelf={bookShelf.shelf}/>
+                }
             })
-            if (bookShelf === undefined) {
-                return <Book key={book.id} updateBook={this.updateBook} book={book} bookShelf="none"/>
-            } else {
-                return <Book key={book.id} updateBook={this.updateBook} book={book} bookShelf={bookShelf.shelf}/>
-            }
-        })
+        }
+        else{
+            return []
+        }
     }
     render() {
         return (
